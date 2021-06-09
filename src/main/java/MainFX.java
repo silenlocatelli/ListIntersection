@@ -19,6 +19,7 @@ public class MainFX extends Application {
 
                 int sizeA = Integer.valueOf(ViewContainer.getView().getSizeATxt().getText());
                 int sizeB = Integer.valueOf(ViewContainer.getView().getSizeBTxt().getText());
+                //disable button here to ensure that only one thread is started
                 ViewContainer.getView().getRunBtn().setDisable(true);
                 ListIntersecter lI = new ListIntersecter(sizeA,sizeB);
             } catch (NumberFormatException nFE){
@@ -30,10 +31,6 @@ public class MainFX extends Application {
                 alert.setContentText("Use Integers only");
                 alert.show();
             }
-
-
-
-
 
         });
 

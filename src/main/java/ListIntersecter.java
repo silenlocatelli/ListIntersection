@@ -9,7 +9,6 @@ public class ListIntersecter implements Runnable  {
 
     private final List<Integer> a;
     private final List<Integer> b;
-    private final HashSet<Integer> c;
     private int sizeA,sizeB;
 
     private Random ran = new Random();
@@ -23,7 +22,7 @@ public class ListIntersecter implements Runnable  {
         this.sizeB = sizeB;
 
 
-        this.c = new HashSet();
+
 
 
         a = new LinkedList<>();
@@ -47,6 +46,9 @@ public class ListIntersecter implements Runnable  {
     @Override
     public void run(){
 
+        //by default left should be selected / then a should be put into the hashSet;
+        boolean left = ViewContainer.getView().getRb1().isSelected();
+
         //change view, reset
         Platform.runLater(()->{
             ViewContainer.getView().getTimeLbl().setText("XX");
@@ -55,23 +57,17 @@ public class ListIntersecter implements Runnable  {
 
         long startTime = System.nanoTime();
 
-        //put smaller list into HashSet, if same size just use list a
-        if(a.size()<= b.size()){
-            c.addAll(a);
-            //save
-            resultSet = (Set<Integer>) b.stream().distinct().filter(c::contains).collect(Collectors.toSet());
-        }else {
-            c.addAll(b);
-            resultSet = (Set<Integer>) a.stream().distinct().filter(c::contains).collect(Collectors.toSet());
-        }
+
+        resultSet = Intersecter.intersectLists(a,b,left);
+
 
         long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime  ;
-        long timeElapsedInSec = TimeUnit.MILLISECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
+        long timeElapsed = endTime - startTime;
+        long timeElapsedInMilliSec = TimeUnit.MILLISECONDS.convert(timeElapsed, TimeUnit.NANOSECONDS);
 
         //change view, set
         Platform.runLater(()->{
-            ViewContainer.getView().getTimeLbl().setText(String.valueOf(timeElapsedInSec));
+            ViewContainer.getView().getTimeLbl().setText(String.valueOf(timeElapsedInMilliSec));
             ViewContainer.getView().getIntersectionLbl().setText(String.valueOf(resultSet.size()));
             ViewContainer.getView().getRunBtn().setDisable(false);
         });
